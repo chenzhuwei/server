@@ -86,27 +86,27 @@ export default {
 	methods: {
 		deleteClient(id) {
 			axios.delete(
-					OC.generateUrl('apps/oauth2/clients/{id}', { id }),
-					this.tokenHeaders
-				)
-				.then(response => {
-					this.clients = this.clients.filter(client => client.id !== id);
-				});
+				OC.generateUrl('apps/oauth2/clients/{id}', { id }),
+				this.tokenHeaders
+			)
+			.then(response => {
+				this.clients = this.clients.filter(client => client.id !== id);
+			});
 		},
 		addClient() {
 			axios.post(
-					OC.generateUrl('apps/oauth2/clients'),
-					{
-						name: this.newClient.name,
-						redirectUri: this.newClient.redirectUri
-					},
-					this.tokenHeaders
-				)
-				.then(response => {
-					this.clients.push(response.data);
-					this.newClient.name = '';
-					this.newClient.redirctUri = '';
-				});
+				OC.generateUrl('apps/oauth2/clients'),
+				{
+					name: this.newClient.name,
+					redirectUri: this.newClient.redirectUri
+				},
+				this.tokenHeaders
+			)
+			.then(response => {
+				this.clients.push(response.data);
+				this.newClient.name = '';
+				this.newClient.redirctUri = '';
+			});
 		}
 	}
 };
