@@ -38,23 +38,22 @@ export default {
 			required: true
 		}
 	},
-	data: function() {
-			return {
-				id: this.client.id,
-				name: this.client.name,
-				redirectUri: this.client.redirectUri,
-				clientId: this.client.clientId,
-				clientSecret: this.client.clientSecret,
-				renderSecret: false,
-			};
+	data() {
+		return {
+			id: this.client.id,
+			name: this.client.name,
+			redirectUri: this.client.redirectUri,
+			clientId: this.client.clientId,
+			clientSecret: this.client.clientSecret,
+			renderSecret: false
+		};
 	},
 	computed: {
 		renderedSecret: function() {
 			if (this.renderSecret) {
 				return this.clientSecret;
-			} else {
-				return '****';
 			}
+			return '****';
 		}
 	},
 	methods: {
@@ -62,5 +61,5 @@ export default {
 			this.renderSecret = !this.renderSecret;
 		}
 	}
-}
+};
 </script>

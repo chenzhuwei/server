@@ -61,53 +61,53 @@ export default {
 	components: {
 		OAuthItem
 	},
-	data: function() {
+	data() {
 		return {
 			clients: [],
 			newClient: {
 				name: '',
-				redirctUri: ''
+				redirectUri: ''
 			}
 		};
 	},
-	beforeMount: function() {
-		let requestToken = OC.requestToken;
-		let tokenHeaders = { headers: { requesttoken: requestToken } };
-
-		axios.get(OC.generateUrl('apps/oauth2/clients'), tokenHeaders)
-			.then((response) => {
-			this.clients = response.data;
-		});
+	computed: {
+		tokenHeaders() {
+			return { headers: { requesttoken: OC.requestToken } };
+		}
+	},
+	beforeMount() {
+		axios.get(OC.generateUrl('apps/oauth2/clients'), {
+				headers: { requesttoken: OC.requestToken }
+			})
+			.then(response => {
+				this.clients = response.data;
+			});
 	},
 	methods: {
 		deleteClient(id) {
-			let requestToken = OC.requestToken;
-			let tokenHeaders = { headers: { requesttoken: requestToken } };
-
-			axios.delete(OC.generateUrl('apps/oauth2/clients/{id}', {id: id}), tokenHeaders)
-				.then((response) => {
+			axios.delete(
+					OC.generateUrl('apps/oauth2/clients/{id}', { id }),
+					this.tokenHeaders
+				)
+				.then(response => {
 					this.clients = this.clients.filter(client => client.id !== id);
 				});
 		},
 		addClient() {
-			let requestToken = OC.requestToken;
-			let tokenHeaders = { headers: { requesttoken: requestToken } };
-
 			axios.post(
-				OC.generateUrl('apps/oauth2/clients'),
-				{
-					name: this.newClient.name,
-					redirectUri: this.newClient.redirctUri
-				},
-				tokenHeaders)
-				.then((response) => {
-					this.clients.push(response.data)
-
+					OC.generateUrl('apps/oauth2/clients'),
+					{
+						name: this.newClient.name,
+						redirectUri: this.newClient.redirectUri
+					},
+					this.tokenHeaders
+				)
+				.then(response => {
+					this.clients.push(response.data);
 					this.newClient.name = '';
 					this.newClient.redirctUri = '';
-				}
-			);
+				});
 		}
-	},
-}
+	}
+};
 </script>
